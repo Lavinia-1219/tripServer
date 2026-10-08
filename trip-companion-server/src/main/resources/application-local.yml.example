@@ -1,0 +1,6 @@
+
+app:
+  weather:
+    amap:
+      key: 把这里换成你的高德Key
+

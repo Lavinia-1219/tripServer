@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>出行伴侣 · Trip Companion</title>
+<style>
+  :root{
+    --bg:#0e1116;
+    --surface:#161a21;
+    --surface-2:#1c222b;
+    --line:#252c37;
+    --line-strong:#333c4a;
+    --fg:#e6eaf0;
+    --fg-dim:#9aa4b2;
+    --fg-faint:#6b7686;
+    --accent:#4c9be8;
+    --ok:#3fb950;
+    --warn:#d29922;
+    --err:#e5534b;
+
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
+
+    --r1:4px; --r2:6px; --r3:10px;
+
+    --t-xs:12px; --t-sm:13px; --t-base:15px; --t-lg:18px;
+    --t-xl:24px; --t-2xl:32px; --t-3xl:44px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:var(--t-base);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:780px;margin:0 auto;padding:var(--s7) var(--s5) var(--s6)}
+
+  header{margin-bottom:var(--s7)}
+  .eyebrow{
+    font-size:var(--t-xs);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--fg-faint);
+    margin:0 0 var(--s2);
+  }
+  h1{
+    font-size:var(--t-3xl);
+    line-height:1.15;
+    letter-spacing:-.02em;
+    font-weight:640;
+    margin:0 0 var(--s3);
+  }
+  .lede{color:var(--fg-dim);margin:0;max-width:52ch}
+
+  .status{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--r3);
+    padding:var(--s5);
+    margin-bottom:var(--s6);
+  }
+  .status-head{
+    display:flex;align-items:center;gap:var(--s3);
+    margin-bottom:var(--s4);
+  }
+  .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--fg-faint);flex:none;
+  }
+  .dot.up{background:var(--ok)}
+  .dot.down{background:var(--err)}
+  .status-title{font-size:var(--t-lg);font-weight:600;margin:0}
+  .status-note{margin-left:auto;font-size:var(--t-xs);color:var(--fg-faint)}
+
+  dl.facts{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--s2) var(--s5)}
+  dl.facts dt{color:var(--fg-faint);font-size:var(--t-sm)}
+  dl.facts dd{
+    margin:0;font-size:var(--t-sm);
+    font-variant-numeric:tabular-nums;
+    word-break:break-all;
+  }
+  code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:.92em;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:var(--r1);
+    padding:1px 5px;
+  }
+
+  section{margin-bottom:var(--s6)}
+  h2{
+    font-size:var(--t-xs);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--fg-faint);
+    font-weight:600;
+    margin:0 0 var(--s4);
+    padding-bottom:var(--s2);
+    border-bottom:1px solid var(--line);
+  }
+
+  .rows{display:flex;flex-direction:column;gap:var(--s1)}
+  .row{
+    display:flex;align-items:baseline;gap:var(--s3);
+    padding:var(--s2) 0;
+    font-size:var(--t-sm);
+  }
+  .row .verb{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:var(--t-xs);
+    flex:none;width:52px;
+    color:var(--fg-faint);
+  }
+  .row .path{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    flex:none;
+  }
+  .row .desc{color:var(--fg-dim);margin-left:auto;text-align:right}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3)}
+  .stat{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--r2);
+    padding:var(--s4);
+  }
+  .stat b{
+    display:block;
+    font-size:var(--t-xl);
+    font-weight:640;
+    font-variant-numeric:tabular-nums;
+    line-height:1.2;
+    margin-bottom:var(--s1);
+  }
+  .stat span{font-size:var(--t-xs);color:var(--fg-faint)}
+
+  footer{
+    margin-top:var(--s7);
+    padding-top:var(--s5);
+    border-top:1px solid var(--line);
+    color:var(--fg-faint);
+    font-size:var(--t-xs);
+  }
+  footer a{color:var(--fg-dim);text-decoration:none;border-bottom:1px solid var(--line-strong)}
+  footer a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+  @media (max-width:560px){
+    .wrap{padding:var(--s5) var(--s4)}
+    h1{font-size:var(--t-2xl)}
+    .stats{grid-template-columns:1fr}
+    dl.facts{grid-template-columns:1fr;gap:var(--s1) 0}
+    dl.facts dd{margin-bottom:var(--s2)}
+    .row .desc{display:none}
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .dot.up{animation:pulse 2.4s ease-in-out infinite}
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Trip Companion · 后端服务</p>
+    <h1>出行伴侣</h1>
+    <p class="lede">
+      以「行程」为中心的出行协作后端：清单、记账、AA 结算、天气建议、
+      景点推荐、车票提醒。所有接口都有验收测试覆盖。
+    </p>
+  </header>
+
+  <div class="status" id="status">
+    <div class="status-head">
+      <span class="dot" id="dot"></span>
+      <h2 class="status-title" id="statusTitle" style="border:0;margin:0;padding:0;font-size:var(--t-lg);color:var(--fg);letter-spacing:0;text-transform:none">正在检查…</h2>
+      <span class="status-note" id="statusNote"></span>
+    </div>
+    <dl class="facts">
+      <dt>服务状态</dt><dd id="fStatus">—</dd>
+      <dt>服务器时间</dt><dd id="fTime">—</dd>
+      <dt>天气数据源</dt><dd id="fWeather">—</dd>
+      <dt>运行环境</dt><dd id="fEnv">—</dd>
+    </dl>
+  </div>
+
+  <section>
+    <h2>接口一览</h2>
+    <div class="rows">
+      <div class="row"><span class="verb">GET</span><span class="path">/api/health</span><span class="desc">健康检查</span></div>
+      <div class="row"><span class="verb">POST</span><span class="path">/api/auth/register</span><span class="desc">注册</span></div>
+      <div class="row"><span class="verb">POST</span><span class="path">/api/auth/login</span><span class="desc">登录</span></div>
+      <div class="row"><span class="verb">GET</span><span class="path">/api/trips</span><span class="desc">行程列表</span></div>
+      <div class="row"><span class="verb">GET</span><span class="path">/api/trips/{id}/checklist</span><span class="desc">出行清单</span></div>
+      <div class="row"><span class="verb">GET</span><span class="path">/api/trips/{id}/expenses</span><span class="desc">花费记账</span></div>
+      <div class="row"><span class="verb">GET</span><span class="path">/api/trips/{id}/settlement</span><span class="desc">AA 结算</span></div>
+      <div class="row"><span class="verb">GET</span><span class="path">/api/trips/{id}/checklist/suggestions</span><span class="desc">天气 × 清单建议</span></div>
+      <div class="row"><span class="verb">GET</span><span class="path">/api/trips/{id}/poi</span><span class="desc">景点/酒店/美食推荐</span></div>
+      <div class="row"><span class="verb">GET</span><span class="path">/api/trips/{id}/tickets</span><span class="desc">车票 + 提醒</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>测试覆盖</h2>
+    <div class="stats">
+      <div class="stat"><b>106</b><span>单元测试</span></div>
+      <div class="stat"><b>8</b><span>验收套件</span></div>
+      <div class="stat"><b>323</b><span>接口断言</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0 0 var(--s2)">
+      接口需要登录：先 <code>POST /api/auth/register</code> 拿 token，
+      再在请求头带上 <code>Authorization: Bearer &lt;token&gt;</code>。
+    </p>
+    <p style="margin:0">
+      Spring Boot 3.3 · Java 21 · 高德 + 和风 · <a href="/api/health">/api/health</a>
+    </p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var dot = document.getElementById('dot');
+  var title = document.getElementById('statusTitle');
+  var note = document.getElementById('statusNote');
+
+  function set(id, v) { document.getElementById(id).textContent = v; }
+
+  fetch('/api/health', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (j) {
+      var d = (j && j.data) || {};
+      dot.className = 'dot up';
+      title.textContent = '服务正常';
+      note.textContent = '刚刚更新';
+
+      set('fStatus', d.status || 'UP');
+      set('fTime', (d.time || '').replace('T', ' ').slice(0, 19));
+
+      var ps = d.weatherProviders || [];
+      set('fWeather', d.weatherConfigured
+        ? (ps.length ? ps.join(' + ') : '已配置')
+        : '未配置（天气走降级）');
+
+      set('fEnv', 'Java 21 / Spring Boot 3.3');
+    })
+    .catch(function (e) {
+      dot.className = 'dot down';
+      title.textContent = '服务异常';
+      note.textContent = String(e.message || e);
+      set('fStatus', 'DOWN');
+    });
+})();
+</script>
+</body>
+</html>

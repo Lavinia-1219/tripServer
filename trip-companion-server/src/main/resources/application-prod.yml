@@ -1,0 +1,23 @@
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/trip_companion?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  h2:
+    console:
+      enabled: false
+
+logging:
+  level:
+    root: INFO
+    com.tripcompanion: INFO
+  file:
+    name: ./logs/app.log

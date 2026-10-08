@@ -1,0 +1,69 @@
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: trip-companion
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  config:
+    import: optional:classpath:application-local.yml
+
+  jpa:
+    open-in-view: false
+
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 8MB
+
+app:
+  auth:
+    token-ttl-days: 30
+
+  weather:
+    order: qweather,amap
+
+    cache-seconds: 1800
+
+    qweather:
+      key: ${QWEATHER_KEY:}
+      host: ${QWEATHER_HOST:devapi.qweather.com}
+      geo-host: ${QWEATHER_GEO_HOST:geoapi.qweather.com}
+
+    amap:
+      key: ${AMAP_KEY:}
+
+  poi:
+    order: mock,amap
+
+    weights:
+      preference: 0.5
+      distance: 0.3
+      rating: 0.2
+
+    limit: 20
+
+    radius-meters: 10000
+
+    amap:
+      key: ${app.weather.amap.key:}
+
+  reminder:
+    advance-minutes: 1440
+
+    scan-interval-ms: 300000
+
+    initial-delay-ms: 10000
+
+logging:
+  level:
+    root: INFO
+    com.tripcompanion: DEBUG
